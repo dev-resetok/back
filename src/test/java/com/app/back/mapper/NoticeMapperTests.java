@@ -22,7 +22,7 @@ public class NoticeMapperTests {
     @Test
     public void testwrite() {
         NoticeDTO noticeDTO = new NoticeDTO();
-        noticeDTO.setId(1L);
+        noticeDTO.setId(222L);
         noticeDTO.setPostTitle("제목1");
         noticeDTO.setPostContent("내용1");
         noticeDTO.setPostSummary("요약1");
@@ -33,7 +33,7 @@ public class NoticeMapperTests {
     }
     @Test
     public void testWriteMultiple() {
-        for (long i = 100; i <= 120; i++) {
+        for (long i = 1; i <= 100; i++) {
             NoticeDTO noticeDTO = new NoticeDTO();
             noticeDTO.setId(i);
             noticeDTO.setPostTitle("제목" + i);

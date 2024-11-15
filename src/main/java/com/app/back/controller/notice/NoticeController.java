@@ -54,7 +54,7 @@ public class NoticeController {
 
     @PostMapping("help-write")
     public RedirectView inquiryWrite(@RequestParam("file") List<MultipartFile> files, InquiryDTO inquiryDTO,AttachmentVO attachmentVO) throws IOException {
-        inquiryDTO.setMemberId(22L);
+        inquiryDTO.setMemberId(2L);
         inquiryDTO.setPostType("INQUIRY");
 
         String rootPath = "C:/upload" + getPath();

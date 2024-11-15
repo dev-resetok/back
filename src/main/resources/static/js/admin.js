@@ -32,19 +32,21 @@ submenus.forEach((submenu) => {
         );
         selectedSection[0].classList.add("selected"); // 해당 섹션 선택
         // resetSearchAndPage(); // 검색어와 페이지 초기화
-        resetSelectAllPostsCheckbox(); // 전체 선택 체크박스 해제
-        resetSelectAllInquiriesCheckbox();
-        resetSelectAllReportsCheckbox();
+
 
         // 선택된 섹션에 따라 데이터 목록을 처음 페이지로 다시 로드
         if (submenu.textContent === "고객센터 문의 목록") {
             fetchFilteredInquiries(1, inquiryKeyword, inquiryFilterType);
+            resetSelectAllInquiriesCheckbox();
         } else if (submenu.textContent === "공지사항 목록") {
-            fetchNotices(1); // 공지사항 첫 페이지로
+            fetchNotices(1,noticeKeyword); // 공지사항 첫 페이지로
         }else if (submenu.textContent === "게시글 목록") {
+            resetSelectAllNoticesCheckbox();
             fetchFilteredPosts(1,postKeyword,postFilterType);
+            resetSelectAllPostsCheckbox(); // 전체 선택 체크박스 해제
         }else if (submenu.textContent === "신고 목록") {
             fetchFilteredReports(1,reportKeyword,reportFilterType);
+            resetSelectAllReportsCheckbox();
         }
     });
 });
@@ -188,7 +190,7 @@ function sortPosts(order) {
         });
     });
 });
-
+// ==========================================공지사항 목록 ===========================================================================
 // 공지사항 링크 클릭 시 해당 섹션으로 이동
 let notificationLinks = document.querySelectorAll("a.notification.notification-table");
 
@@ -200,6 +202,101 @@ notificationLinks.forEach((notificationLink) => {
         );
         notificationInquirySection[0].classList.add("selected"); // 해당 섹션 선택
     });
+});
+const noticeSearchInput = document.querySelector(".Filter_searchInput.notice-page-search");
+let noticeKeyword = '';
+
+noticeSearchInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        noticeKeyword = noticeSearchInput.value.trim();
+        fetchFilteredNotices(1, noticeKeyword);
+    }
+});
+
+// 전체 선택 및 개별 선택 체크박스 관리
+const selectAllNotices = () => {
+    const selectAllCheckbox = document.getElementById("selectAllNotices");
+    if (selectAllCheckbox) {
+        selectAllCheckbox.addEventListener("change", function () {
+            const checkboxes = document.querySelectorAll(".notification-list-checkbox");
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+        });
+    }
+
+    document.querySelectorAll(".notification-list-checkbox").forEach(checkbox => {
+        checkbox.addEventListener("change", function () {
+            const allChecked = document.querySelectorAll(".notification-list-checkbox:checked").length === document.querySelectorAll(".notification-list-checkbox").length;
+            selectAllCheckbox.checked = allChecked;
+        });
+    });
+};
+selectAllNotices();
+
+function resetSelectAllNoticesCheckbox() {
+    const selectAllCheckbox = document.getElementById("selectAllNotices");
+    selectAllCheckbox.checked = false;
+}
+
+// ===========================================공지사항 체크박스 삭제 ===============================================================
+document.querySelector(".deleteSelectedBtn.notice-delete").addEventListener("click", () => {
+    console.log("클릭")
+    const selectedCheckboxes = document.querySelectorAll(".notification-list-checkbox:checked");
+    const selectedIds = Array.from(selectedCheckboxes).map(
+        (checkbox) => checkbox.closest(".notification-container").querySelector(".notification-num").textContent.trim()
+    );
+
+    if (selectedIds.length === 0) {
+        alert("삭제할 공지사항을 선택하세요.");
+        return;
+    }
+
+    deleteSelectedNotices(selectedIds); // 공지사항 삭제 함수 호출
+});
+// =========================================공지사항 작성==============================================================
+document.getElementById("notification-write-button").addEventListener("click", () => {
+    const sections = document.querySelectorAll("section.admin-page");
+    sections.forEach(section => section.classList.remove("selected"));
+
+    const writeSection = Array.from(sections).find(section => section.dataset.value === "공지사항 작성");
+    writeSection.classList.add("selected");
+});
+// ===================================================================================================================================
+// 공지사항 조회에서 수정하기 및 삭제하기 버튼 클릭 시 이벤트
+const modifyButton = document.querySelector(".go-update.admin-btn");
+const deleteButton = document.querySelector(".go-delete.admin-btn");
+
+// 수정하기 버튼 클릭 시 공지사항 수정 페이지로 이동
+document.querySelector(".go-update.admin-btn").addEventListener("click", async () => {
+    const noticeId = document.querySelector(".notification-header h1").getAttribute("data-id");
+    if (noticeId) {
+        sections.forEach(section => section.classList.remove("selected"));
+        const updateSection = Array.from(sections).find(section => section.dataset.value === "공지사항 수정");
+        updateSection.classList.add("selected");
+        // 공지사항 정보를 가져와 수정 페이지에 렌더링합니다.
+        fetchNoticeDetailForEdit(noticeId);
+    } else {
+        console.error("공지사항 ID를 찾을 수 없습니다.");
+    }
+});
+
+// 수정 폼 제출 시 이벤트 리스너 추가
+document.querySelector(".notification-update-form form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const updateForm = event.target;
+    await submitNoticeUpdate(updateForm);
+});
+
+
+
+// 삭제하기 버튼 클릭 시 서버로 삭제 요청 보내기
+deleteButton.addEventListener("click", async () => {
+    const noticeId = document.querySelector(".notification-header h1").getAttribute("data-id");
+    if (confirm("정말로 삭제하시겠습니까?")) {
+        await submitNoticeDelete(noticeId);
+    }
 });
 
 
@@ -284,9 +381,9 @@ function resetSelectAllInquiriesCheckbox() {
 selectAllInquiries();
 
 // 삭제 버튼 클릭 시 이벤트
-document.querySelector(".deleteSelectedBtn.inquirty-delete").addEventListener("click", () => {
+document.querySelector(".deleteSelectedBtn.inquiry-delete").addEventListener("click", () => {
     const selectedCheckboxes = document.querySelectorAll(".inquiryCheckbox:checked");
-    // 각 체크박스에서 문의 ID를 가져와 배열로 저장
+    // 각 체크박스에서 문의 ID를 가져와 배열로 저장 **
     const selectedIds = Array.from(selectedCheckboxes).map((checkbox) =>
         checkbox.closest(".data_row").getAttribute("data-id")
     );
@@ -356,7 +453,7 @@ function resetSelectAllPostsCheckbox() {
 selectAllPosts();
 
 // 삭제 버튼 클릭 시 이벤트
-document.getElementById("deleteSelectedBtn").addEventListener("click", () => {
+document.querySelector(".deleteSelectedBtn.post-page-btn").addEventListener("click", () => {
     const selectedCheckboxes = document.querySelectorAll(".postCheckbox:checked");
     const selectedIds = Array.from(selectedCheckboxes).map(
         (checkbox) => checkbox.closest(".ServiceTable_row").querySelector(".post_ID").textContent.trim()

@@ -4,7 +4,7 @@ const fetchFilteredInquiries = async (page = 1, keyword = inquiryKeyword, filter
         const response = await fetch(`/admin/inquiry-page?page=${page}&query=${keyword}&filterType=${filterType}`);
         const data = await response.json();
 
-        renderInquiries(data.inquiries);
+        await renderInquiries(data.inquiries);
         renderPagination(data.pagination, keyword, filterType);
         console.log("js에서 선택된 필터 : " +filterType)
         resetSelectAllInquiriesCheckbox();
@@ -106,11 +106,9 @@ const fetchNotices = async (page = 1) => {
         console.error("공지사항 데이터를 불러오는 중 오류 발생:", error);
     }
 };
-// 공지사항 목록 초기 로드
-fetchNotices(); // 초기 공지사항 데이터 로드
 
-//  공지사항 검색
-const fetchFilteredNotices = async (page, keyword) => {
+//  공지사항 필터
+const fetchFilteredNotices = async (page, keyword=noticeKeyword) => {
     try {
         const response = await fetch(`/admin/notice-list?page=${page}&query=${keyword}`);
         const data = await response.json();
@@ -120,6 +118,143 @@ const fetchFilteredNotices = async (page, keyword) => {
         console.error("공지사항 데이터를 불러오는 중 오류 발생:", error);
     }
 };
+// 공지사항 목록 초기 로드
+fetchFilteredNotices(1,''); // 초기 공지사항 데이터 로드
+
+// 공지사항 삭제버튼
+const deleteSelectedNotices = async (selectedIds) => {
+    try {
+        const response = await fetch("/admin/delete-notices", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(selectedIds),  //이미 다중을 포함
+        });
+
+        if (response.ok) {
+            alert("선택한 공지사항이 삭제되었습니다.");
+            fetchFilteredNotices(1,noticeKeyword);  // 목록 새로고침
+        } else {
+            console.error("삭제 실패:", response.status);
+        }
+    } catch (error) {
+        console.error("삭제 요청 중 오류 발생:", error);
+    }
+};
+// 공지사항 작성
+document.querySelector(".notification-write-form form").addEventListener("submit", async (event) => {
+    event.preventDefault(); // 기본 폼 제출 방지
+
+    const title = document.querySelector('input[name="request-title"]').value.trim();
+    const content = document.querySelector('textarea[name="request-description"]').value.trim();
+
+    try {
+        const response = await fetch("/admin/add-notice", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ postTitle: title, postContent: content })
+        });
+
+        if (response.ok) {
+            alert("공지사항이 추가되었습니다.");
+
+            // 공지사항 목록 섹션으로 이동
+            sections.forEach(section => section.classList.remove("selected"));
+            const listSection = Array.from(sections).find(section => section.dataset.value === "공지사항 목록");
+            listSection.classList.add("selected");
+
+            fetchFilteredNotices(1,noticeKeyword);
+        } else {
+            alert("공지사항 추가에 실패했습니다.");
+        }
+    } catch (error) {
+        console.error("공지사항 추가 중 오류:", error);
+    }
+});
+
+
+// 공지사항 수정 페이지에 공지사항 데이터를 렌더링하는 함수
+const fetchNoticeDetailForEdit = async (noticeId) => {
+    try {
+        const response = await fetch(`/admin/notice-detail?id=${noticeId}`);
+        const data = await response.json();
+        const updateForm = document.querySelector(".notification-update-form form");
+
+        if (data.success && updateForm) {
+            updateForm.querySelector('input[name="request-title"]').value = data.notice.postTitle;
+            updateForm.querySelector('textarea[name="request-description"]').value = data.notice.postContent;
+            updateForm.setAttribute("data-id", noticeId);
+        } else {
+            console.error("공지사항 정보를 불러오는 데 실패했습니다.");
+        }
+    } catch (error) {
+        console.error("공지사항 정보를 불러오는 중 오류 발생:", error);
+    }
+};
+
+// 수정 폼 제출 시 서버로 PATCH 요청 보내기
+const submitNoticeUpdate = async (updateForm) => {
+    const noticeId = updateForm.getAttribute("data-id");
+    const title = updateForm.querySelector('input[name="request-title"]').value.trim();
+    const content = updateForm.querySelector('textarea[name="request-description"]').value.trim();
+
+    console.log("Notice ID:", noticeId);
+    console.log("Title:", title);
+    console.log("Content:", content);
+
+    try {
+        const response = await fetch(`/admin/notice-update`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id: noticeId, postTitle: title, postContent: content }),
+        });
+
+        if (response.ok) {
+            alert("공지사항이 수정되었습니다.");
+            // 공지사항 목록으로 이동
+            sections.forEach(section => section.classList.remove("selected"));
+            const listSection = Array.from(sections).find(section => section.dataset.value === "공지사항 목록");
+            listSection.classList.add("selected");
+            fetchFilteredNotices(1, noticeKeyword);
+        } else {
+            alert("공지사항 수정에 실패했습니다.");
+        }
+    } catch (error) {
+        console.error("공지사항 수정 중 오류 발생:", error);
+    }
+};
+
+// 공지사항 삭제 요청 함수
+const submitNoticeDelete = async (noticeId) => {
+    try {
+        const response = await fetch(`/admin/delete-notices`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify([noticeId]), // 배열로 전송 : List<Long> 형태로 정의 되어있기 때문
+        });
+
+        if (response.ok) {
+            alert("공지사항이 삭제되었습니다.");
+            // 공지사항 목록으로 이동
+            sections.forEach(section => section.classList.remove("selected"));
+            const listSection = Array.from(sections).find(section => section.dataset.value === "공지사항 목록");
+            listSection.classList.add("selected");
+            fetchFilteredNotices(1, noticeKeyword);
+        } else {
+            console.error("삭제 실패:", response.status);
+            alert("공지사항 삭제에 실패했습니다.");
+        }
+    } catch (error) {
+        console.error("공지사항 삭제 중 오류 발생:", error);
+    }
+};
+
+
 
 // 공지사항 조회
 document.querySelector(".notification-list-wrap").addEventListener("click", async (event) => {
@@ -169,6 +304,7 @@ const fetchRecentNotices = async () => {
 
 // 페이지 로드 시 최신 공지사항 10개를 사이드바에 표시
 fetchRecentNotices();
+
 //===============================게시글 목록======================================================================
 // 필터링된 게시글 데이터를 가져오는 함수
 const fetchFilteredPosts = async (page = 1, keyword = postKeyword, filterType = postFilterType) => {

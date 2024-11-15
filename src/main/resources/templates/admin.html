@@ -86,7 +86,7 @@
                                 aria-expanded="true"
                             >
                                 관리자 ID:
-                                <span class="project-info-emphasis">Yanawa</span>
+                                <span class="project-info-emphasis" id="admin-id-wrap"></span>
                                 <!-- <span class="ProjectInfo_text_info">정보</span> -->
                                 <!-- <svg
                                     viewBox="0 0 24 24"
@@ -351,7 +351,7 @@
                                 <div class="ServiceHeader_container">
                                     <h2 class="ServiceHeader_title">공지사항 목록</h2>
                                     <div class="action-buttons-wrap">
-                                        <button id="notification-write-button" class="deleteSelectedBtn notice-delete">작성하기</button>
+                                        <button id="notification-write-button" class="deleteSelectedBtn">작성하기</button>
                                         <div class="action-buttons">
                                             <button
                                                     id="deleteSelectedBtn"
@@ -368,7 +368,7 @@
                                     </div>
                                 </div>
                                 <div class="list-top">
-                                    <input type="checkbox">
+                                    <input type="checkbox" id="selectAllNotices" >
                                     <div class="category-notification-num">번호</div>
                                     <div class="category-notification-title noti-title-admin">제목</div>
                                     <div class="category-notification-date notification-table noti-date-admin">작성일</div>
@@ -703,7 +703,7 @@
                                             />
                                             <button
                                                     id="deleteSelectedBtn"
-                                                    class="deleteSelectedBtn report-delete"
+                                                    class="deleteSelectedBtn inquiry-delete"
                                             >
                                                 게시글 삭제
                                             </button>
@@ -718,7 +718,7 @@
                                                     class="inquiryTable_cell inquiry-headerCell selectAllCell"
                                             >
                                                 <input
-                                                        type="checkbox"
+                          gi                              type="checkbox"
                                                         id="selectAllInquiries"
                                                 />
                                             </div>
@@ -1180,7 +1180,7 @@
                                                 />
                                                 <button
                                                     id="deleteSelectedBtn"
-                                                    class="deleteSelectedBtn"
+                                                    class="deleteSelectedBtn post-page-btn"
                                                 >
                                                     게시글 삭제
                                                 </button>
@@ -2491,6 +2491,9 @@
     </body>
 
     <!-- 관리자 홈 -->
+<script th:inline="javascript">
+    const member = [[${session.loginMember}]];
+</script>
     <script src="/js/admin/admin_service.js"></script>
     <script src="/js/admin/admin_layout.js"></script>
     <script src="/js/admin.js"></script>

@@ -1,25 +1,19 @@
-<select id="selectFilterAll" resultType="inquiryDTO">
-    select
-    i.id,
-    p.post_title,
-    p.post_content,
-    p.created_date,
-    p.updated_date,
-    m.member_nickname,
-    i.inquiry_email,
-    i.inquiry_type,
-    i.inquiry_status
-    from tbl_inquiry i
-    join tbl_post p on i.id = p.id
-    join tbl_member m on p.member_id = m.id
-    <include refid="search"/>
-    where p.post_status = 'VISIBLE'
-    and i.inquiry_type = #{filterType}  <!-- filterType을 항상 적용 -->
-    order by
-    <choose>
-        <when test="pagination.order == '최신순'">p.created_date</when>
-        <otherwise>i.inquiry_type</otherwise>
-    </choose>
-    desc
-    limit #{pagination.startRow}, #{pagination.rowCount};
-</select>
+// 필터링된 게시글 데이터를 가져오는 함수
+const fetchFilteredPosts = async (page = 1, keyword = postKeyword, filterType = postFilterType) => {
+    try {
+        const response = await fetch(`/admin/post-list?page=${page}&query=${keyword}&filterType=${filterType}`);
+        console.log("서버 응답 상태:", response.ok); // 서버 응답 상태를 확인
+        if (response.ok) {
+            const data = await response.json();
+            console.log("서버로부터 받은 데이터:", data); // 받은 데이터 확인
+            renderPosts(data.posts); // 필터링된 데이터를 렌더링
+            postPagination(data.pagination, keyword, filterType);
+            console.log("필터링 조건:", { page, keyword, filterType });
+            resetSelectAllPostsCheckbox(); // 전체 선택 체크박스 해제
+        } else {
+            console.error("서버 응답 실패:", response.status);
+        }
+    } catch (error) {
+        console.error("필터링 오류:", error); // 오류 처리
+    }
+};

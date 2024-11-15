@@ -34,6 +34,8 @@ public class AttachmentController {
     public AttachmentDTO upload(@RequestParam("file")List<MultipartFile> files) throws IOException {
 //        String rootPath = "D:/dev/OnjungSpring/back/src/main/resources/static/files" + getPath();
         String rootPath = "C:/upload/" + getPath();
+        log.info("{}",files.size());
+
         AttachmentDTO attachmentDTO = new AttachmentDTO();
         UUID uuid = UUID.randomUUID();
 

@@ -170,6 +170,34 @@ public AdminDTO getNoticeList(Pagination pagination, Search search, @RequestPara
     return result;
 }
 
+// 공지사항 삭제 (논리 삭제)
+@PatchMapping("/admin/delete-notices")
+@ResponseBody
+public void deleteNotices(@RequestBody List<Long> noticeIds) {
+    log.info("삭제할 아이디: {}", noticeIds);
+    noticeIds.forEach(noticeId -> noticeService.updateStatus(noticeId, AdminPostStatus.DELETED));
+    log.info("공지사항 ID {} 상태를 DELETED로 설정", noticeIds);
+}
+
+@PostMapping("/admin/add-notice")
+@ResponseBody
+public ResponseEntity<Void> addNotice(@RequestBody NoticeDTO noticeDTO) {
+    noticeDTO.setMemberId(2L); // memberId를 임의로 2로 설정
+    noticeService.write(noticeDTO);
+    return ResponseEntity.status(HttpStatus.CREATED).build();
+}
+
+// 공지사항 업데이트
+@PatchMapping("/admin/notice-update")
+@ResponseBody
+public ResponseEntity<Void> updateNotice(@RequestBody NoticeDTO noticeDTO) {
+    log.info("수정할 공지사항 ID: {}, 제목: {}, 내용: {}", noticeDTO.getId(), noticeDTO.getPostTitle(), noticeDTO.getPostContent());
+    noticeService.update(noticeDTO);  // 공지사항 수정 메서드 호출
+    return ResponseEntity.ok().build();  // 상태 코드 200 OK 응답
+}
+
+
+
 // 공지사항 조회
 @GetMapping("/admin/notice-detail")
 @ResponseBody

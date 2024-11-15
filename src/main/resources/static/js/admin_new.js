@@ -1,5 +1,6 @@
 const notificationWriteButton = document.querySelector("button#notification-write-button");
 const goToUpdateNotificationBtn = document.querySelector("a.go-update.admin-btn");
+const adminNickNameWrap = document.querySelector("#admin-id-wrap");
 
 notificationWriteButton.addEventListener("click", (e) => {
     const sections = document.querySelectorAll("section.admin-page");
@@ -18,3 +19,5 @@ goToUpdateNotificationBtn.addEventListener("click", (e) => {
     );
     notificationUpdateSection.classList.add("selected");
 });
+
+adminNickNameWrap.innerText = member.memberNickName;

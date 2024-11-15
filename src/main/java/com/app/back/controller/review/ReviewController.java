@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -94,11 +95,12 @@ public class ReviewController {
         return new RedirectView("/review/review-list"); // 마이페이지로 리턴
     }
 
-    @GetMapping("review-delete")
-    public RedirectView reviewDelete(@RequestParam("postId") Long postId) {
+    @PostMapping("/review-delete")
+    public RedirectView reviewDelete(@RequestBody Map<String, Long> payload) {
+        Long postId = payload.get("postId");
         reviewService.delete(postId);
-        return new RedirectView("/review/review-list"); } // 마이페이지로 리턴
-
+        return new RedirectView("/review/review-list");
+    }
 
     @GetMapping("/my-review/{memberId}")
     @ResponseBody

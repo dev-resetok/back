@@ -22,14 +22,17 @@ public interface NoticeMapper {
     public List<NoticeDTO> selectAll(@Param("pagination") Pagination pagination, @Param("search")Search search);
 
 //    수정
-    void updateById(NoticeDTO noticeDTO);
+    public void updateById(NoticeDTO noticeDTO);
 
 //    삭제
-    void deleteById(Long id);
+    public void deleteById(Long id);
 
-    //    게시글 전체 개수 조회
+//    게시글 전체 개수 조회
     public int selectTotal();
-    //    검색 결과 개수 조회
+
+//    검색 결과 개수 조회
     public int selectTotalWithSearch(@Param("search") Search search);
 
+// 공지사항 상태 업데이트 (논리 삭제)
+    public void updateStatus(@Param("id") Long id, @Param("status") String status);
 }

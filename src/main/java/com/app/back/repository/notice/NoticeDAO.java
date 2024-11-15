@@ -7,6 +7,7 @@ import com.app.back.domain.post.Search;
 import com.app.back.domain.review.ReviewDTO;
 import com.app.back.domain.review.ReviewVO;
 import com.app.back.mapper.notice.NoticeMapper;
+import com.app.back.mapper.post.PostMapper;
 import com.app.back.mapper.review.ReviewMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -19,10 +20,15 @@ import java.util.Optional;
 public class NoticeDAO {
     private final NoticeMapper noticeMapper;
     private final NoticeDTO noticeDTO;
+    private final PostMapper postMapper;
 
     //    게시글 작성
     public void save(NoticeVO noticeVO) {
         noticeMapper.insert(noticeVO);
+    }
+//    포스트 아이디 이어서 작성하기 위함
+    public Long selectCurrentId() {
+        return postMapper.selectCurrentId();
     }
 
     //    게시글 전체 조회
@@ -45,12 +51,17 @@ public class NoticeDAO {
     }
 
     //    수정
-    public void update(NoticeVO noticeVO) {
+    public void update(NoticeDTO noticeDTO) {
         noticeMapper.updateById(noticeDTO);
     }
 
     //    삭제
     public void delete(Long id) {noticeMapper.deleteById(id);}
+
+    // 상태 업데이트 (논리 삭제)
+    public void updateStatus(Long id, String status) {
+        noticeMapper.updateStatus(id, status);
+    }
 
 
 

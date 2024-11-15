@@ -30,25 +30,32 @@
         select id, post_title, post_content
         from tbl_post
         where id = #{id}
+          and post_status = 'VISIBLE'
     </select>
 
     <select id="selectAll" resultType="noticeDTO">
         select n.id, post_title, created_date, updated_date
         from tbl_post p join tbl_notice n
         on p.id = n.id
+        where p.post_status = 'VISIBLE'
         <include refid="search"/>
         order by created_date desc, n.id desc
         limit #{pagination.startRow}, #{pagination.rowCount};
     </select>
 
 
-    <select id="selectTotal">
-        select count(*) from tbl_notice
+    <select id="selectTotal" resultType="int">
+        select count(*)
+        from tbl_notice n
+            join tbl_post p on n.id = p.id
+        where p.post_status = 'VISIBLE'
     </select>
 
-    <select id="selectTotalWithSearch">
-        select count(*) from tbl_post p join tbl_notice n
-        on p.id = n.id
+    <select id="selectTotalWithSearch" resultType="int">
+        select count(*)
+        from tbl_post p
+            join tbl_notice n on p.id = n.id
+        where p.post_status = 'VISIBLE'
         <include refid="search"/>
     </select>
 
@@ -63,5 +70,11 @@
         delete from tbl_notice
         where id = #{id}
     </delete>
+
+    <update id="updateStatus">
+        update tbl_post
+        set post_status = #{status}
+        where id = #{id}
+    </update>
 
 </mapper>

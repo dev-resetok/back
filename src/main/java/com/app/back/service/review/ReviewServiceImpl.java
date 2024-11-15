@@ -73,11 +73,12 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-
+        attachmentDAO.deleteByPostId(id);
         reviewDAO.delete(id);
         postDAO.delete(id);
-        // ID로 Q&A 게시글 삭제
+        // ID로 Q&A 게시글 삭제 (필요하다면 추가)
     }
 
     @Override

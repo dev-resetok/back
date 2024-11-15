@@ -75,14 +75,14 @@
 <select id="selectTotal">
     select count(*)
     from tbl_inquiry i
-    join tbl_post p on i.id = p.id
+        join tbl_post p on i.id = p.id
     where p.post_status = 'VISIBLE'
 </select>
 
 <select id="selectTotalWithSearch">
     select count(*)
     from tbl_inquiry i
-    join tbl_post p on i.id = p.id
+        join tbl_post p on i.id = p.id
     <include refid="search"/>
     and p.post_status = 'VISIBLE'
 </select>
@@ -90,8 +90,8 @@
 <select id="selectTotalWithFilter" resultType="int">
     select count(*)
     from tbl_inquiry i
-    join tbl_post p on i.id = p.id
-    join tbl_member m on p.member_id = m.id
+        join tbl_post p on i.id = p.id
+        join tbl_member m on p.member_id = m.id
     <include refid="search"/>
     where p.post_status = 'VISIBLE'
     and i.inquiry_type = #{filterType}

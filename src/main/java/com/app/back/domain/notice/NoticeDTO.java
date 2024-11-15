@@ -15,12 +15,14 @@ public class NoticeDTO {
     private String postTitle;
     private String postContent;
     private String postSummary;
-    private String postType;
-    private String postStatus;
-    private Long postViewCount;
+    private String postType = "NOTICE"; // 공지사항 타입을 기본값으로 설정
+    private String postStatus = "VISIBLE"; // 기본 상태 설정
+    private Long postViewCount = 0L; // 초기 조회 수 설정
     private Long memberId;
     private String createdDate;
     private String updatedDate;
+
+    private Long postId;
 
 
 public PostVO toPostVO(){

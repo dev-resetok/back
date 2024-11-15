@@ -566,3 +566,7 @@ a {
 .notification-write-form, .notification-update-form {
     margin-top: 40px;
 }
+#report_status {
+    padding-right: 20px;
+    padding-left: 10px;
+}
