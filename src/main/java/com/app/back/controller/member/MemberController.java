@@ -70,7 +70,8 @@ public class MemberController {
 
 
 
-            MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+            MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
+            MemberDTO loginMember = loginMemberBefore.toDTO();
             if (loginMember == null) {
                 log.info("세션에 저장된 로그인 정보가 없습니다.");
             } else {
@@ -105,7 +106,8 @@ public class MemberController {
 
     @GetMapping("/main/main")
     public String goToMain(HttpSession session, Model model) {
-        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+        MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
+        MemberDTO loginMember = loginMemberBefore.toDTO();
         boolean isLoggedIn = (loginMember != null);
 
         model.addAttribute("isLogin", isLoggedIn);
@@ -226,8 +228,9 @@ public class MemberController {
     }
 
     @GetMapping("/mypage/mypage")
-    public String goToMypage(HttpSession session, Model model, @RequestParam(required = false) Boolean charge, @RequestParam(required = false) int donationAmount){
-        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+    public String goToMypage(HttpSession session, Model model, @RequestParam(required = false) Boolean charge, @RequestParam(required = false) Integer donationAmount){
+        MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
+        MemberDTO loginMember = loginMemberBefore.toDTO();
 
         if (loginMember != null) {
             model.addAttribute("member", loginMember);
@@ -244,7 +247,8 @@ public class MemberController {
 
     @GetMapping("/charge")
     public String goToCharge(HttpSession session){
-        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+        MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
+        MemberDTO loginMember = loginMemberBefore.toDTO();
 
         if (loginMember != null) {
             log.info("charge로 감");
@@ -256,7 +260,8 @@ public class MemberController {
 
     @GetMapping("/donation/charge/{donationAmount}")
     public String goToChargeForDonation(HttpSession session, PathVariable donationAmount) {
-        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+        MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
+        MemberDTO loginMember = loginMemberBefore.toDTO();
 
         if (loginMember != null) {
             log.info("donationCharge로 감");
@@ -280,7 +285,8 @@ public class MemberController {
     @GetMapping("/member/info")
     @ResponseBody
     public ResponseEntity<MemberDTO> getMemberInfo(HttpSession session) {
-        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+        MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
+        MemberDTO loginMember = loginMemberBefore.toDTO();
 
         if (loginMember != null) {
             log.info("세션에서 가져온 회원 정보: {}", loginMember);
@@ -293,7 +299,8 @@ public class MemberController {
 
     @GetMapping("/mypage/mypage-profile-edit")
     public String goToProfileEdit(HttpSession session, Model model) {
-        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+        MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
+        MemberDTO loginMember = loginMemberBefore.toDTO();
 
         if (loginMember != null) {
             model.addAttribute("member", loginMember);
@@ -308,7 +315,8 @@ public class MemberController {
     public ResponseEntity<String> updateProfile(
             @RequestBody MemberDTO memberDTO1, HttpSession session) {
 
-        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+        MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
+        MemberDTO loginMember = loginMemberBefore.toDTO();
 
         if (loginMember == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
