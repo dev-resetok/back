@@ -63,10 +63,14 @@ public class MemberController {
         Optional<MemberVO> member = memberService.login(memberDTO.toVO());
         if (member.isPresent()) {
             log.info("로그인 성공, MemberVO: {}", member.get());
-            MemberDTO memberDTOFromVO = member.get().toDTO();
+//            MemberDTO memberDTOFromVO = member.get().toDTO();
+//            // 세션에 로그인된 사용자 정보 저장
+//            session.setAttribute("loginMember", memberDTOFromVO);
+//            log.info("로그인 후 세션에 저장할 사용자 정보: {}", memberDTOFromVO);
+            MemberVO memberVO = member.get();
             // 세션에 로그인된 사용자 정보 저장
-            session.setAttribute("loginMember", memberDTOFromVO);
-            log.info("로그인 후 세션에 저장할 사용자 정보: {}", memberDTOFromVO);
+            session.setAttribute("loginMember", memberVO);
+            log.info("로그인 후 세션에 저장할 사용자 정보: {}", memberVO);
 
 
 
@@ -80,11 +84,11 @@ public class MemberController {
 
 
             // 로그 추가: 관리자 여부 확인
-            String memberType = memberDTOFromVO.getMemberLoginType();
+            String memberType = memberVO.getMemberLoginType();
             log.info("로그인한 사용자 유형: {}", memberType);
 
             // 사용자 유형에 따른 리다이렉트 URL 설정
-            String redirectUrl = "NORMAL".equals(memberDTOFromVO.getMemberLoginType()) ? "/main/main" : "/admin";
+            String redirectUrl = "NORMAL".equals(memberVO.getMemberLoginType()) ? "/main/main" : "/admin";
             LoginResponseDTO responseDTO = new LoginResponseDTO(redirectUrl);
 
             return ResponseEntity.ok(responseDTO);
@@ -313,21 +317,21 @@ public class MemberController {
     @PostMapping("/member/update-profile")
     @ResponseBody
     public ResponseEntity<String> updateProfile(
-            @RequestBody MemberDTO memberDTO1, HttpSession session) {
+            @RequestBody MemberVO memberVO, HttpSession session) {
 
         MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
-        MemberDTO loginMember = loginMemberBefore.toDTO();
+        MemberDTO loginMemberChanged = loginMemberBefore.toDTO();
 
-        if (loginMember == null) {
+        if (loginMemberChanged == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
         }
 
-        loginMember.setMemberNickName(memberDTO1.getMemberNickName());
-        loginMember.setMemberIntroduction(memberDTO1.getMemberIntroduction());
+        loginMemberChanged.setMemberNickName(memberVO.getMemberNickName());
+        loginMemberChanged.setMemberIntroduction(memberVO.getMemberIntroduction());
 
-        session.setAttribute("loginMember", loginMember);
+        session.setAttribute("loginMember", loginMemberChanged.toVO());
 
-        memberService.updateProfile(loginMember.toVO());
+        memberService.updateProfile(loginMemberChanged.toVO());
 
         return ResponseEntity.ok("프로필이 성공적으로 수정되었습니다.");
     }

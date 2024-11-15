@@ -4,6 +4,7 @@ import com.app.back.domain.donation.DonationDTO;
 import com.app.back.domain.donation.DonationVO;
 import com.app.back.domain.donation_record.DonationRecordDTO;
 import com.app.back.domain.member.MemberDTO;
+import com.app.back.domain.member.MemberVO;
 import com.app.back.domain.post.Pagination;
 import com.app.back.domain.review.ReviewDTO;
 import com.app.back.service.attachment.AttachmentService;
@@ -40,7 +41,8 @@ public class DonationController {
 
     @GetMapping("donation-write")
     public String goToWriteForm(HttpSession session, Model model) {
-        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+        MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
+        MemberDTO loginMember = loginMemberBefore.toDTO();
         if (loginMember != null) {
             model.addAttribute("member", loginMember);
         } else {
@@ -52,9 +54,10 @@ public class DonationController {
 
     @PostMapping("donation-write")
     public RedirectView donationWrite(DonationDTO donationDTO, @RequestParam("uuid") List<String> uuids, @RequestParam("realName") List<String> realNames, @RequestParam("path") List<String> paths, @RequestParam("size") List<String> sizes, @RequestParam("file") List<MultipartFile> files) throws IOException {
-
+        MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
+        MemberDTO loginMember = loginMemberBefore.toDTO();
+        donationDTO.setMemberId(loginMember.getId());
         donationDTO.setPostType("DONATION");
-
         if (donationDTO.getPostTitle() == null || donationDTO.getPostContent() == null) {
             log.error("필수 데이터가 없습니다.");
             return new RedirectView("/donation/donation-write");
@@ -74,7 +77,8 @@ public class DonationController {
 
     @GetMapping("donation-list")
     public String goToList(Pagination pagination, Model model, @RequestParam(required = false) String filterType) {
-        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+        MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
+        MemberDTO loginMember = loginMemberBefore.toDTO();
         if (loginMember != null) {
             model.addAttribute("member", loginMember);
         } else {
@@ -98,7 +102,8 @@ public class DonationController {
 
     @GetMapping("donation-inquiry")
     public String goToInquiry( HttpSession session, @RequestParam("postId") Long postId, Model model) {
-        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+        MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
+        MemberDTO loginMember = loginMemberBefore.toDTO();
         if (loginMember != null) {
             model.addAttribute("member", loginMember);
         } else {
