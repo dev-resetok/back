@@ -139,7 +139,7 @@ async function loadReviews() {
             const reviewCard = `
                 <div class="rfm-child">
                     <div class="main-home-review-card">
-                        <a href="#" class="hlisls iookvl">
+                        <a class="hlisls iookvl">
                             <div class="top-part">
                                 <div class="image-outer">
                                     <div class="hnuwji cover">
