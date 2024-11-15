@@ -92,6 +92,7 @@ public AdminDTO getInquiryList(Pagination pagination, Search search, @RequestPar
     // 결과 데이터를 AdminDTO에 설정하여 반환
     AdminDTO adminDTO = new AdminDTO();
     adminDTO.setInquiries(inquiries);
+    log.info("필터링된 문의목록임: {}", adminDTO.getInquiries());
     adminDTO.setPagination(pagination);
 
     return adminDTO;
