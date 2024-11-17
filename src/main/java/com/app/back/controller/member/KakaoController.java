@@ -27,9 +27,17 @@ public class KakaoController {
         Optional<MemberDTO> kakaoInfo = kakaoService.getKakaoInfo(token);
 
         if (kakaoInfo.isPresent()) {
-            MemberVO kakaoMember = memberService.getKakaoMember(kakaoInfo.get().getKakaoEmail()).orElseThrow();
-            session.setAttribute("loginMember", kakaoMember);
-            session.setAttribute("loginType", MemberLoginType.KAKAO);  // Enum 사용
+            Optional<MemberVO> kakaoMemberOpt = memberService.getKakaoMember(kakaoInfo.get().getKakaoEmail());
+            if (kakaoMemberOpt.isPresent()) {
+                session.setAttribute("loginMember", kakaoMemberOpt.get());
+                session.setAttribute("loginType", MemberLoginType.KAKAO);
+            } else {
+                log.error("카카오 회원 정보가 없습니다.");
+                return new RedirectView("/error-page");
+            }
+        } else {
+            log.error("카카오 인증 실패");
+            return new RedirectView("/error-page");
         }
 
         return new RedirectView("/main/main");

@@ -226,7 +226,7 @@ public class MemberController {
     }
 
     @GetMapping("/mypage/mypage")
-    public String goToMypage(HttpSession session, Model model, @RequestParam(required = false) Boolean charge, @RequestParam(required = false) int donationAmount){
+    public String goToMypage(HttpSession session, Model model, @RequestParam(required = false) Boolean charge, @RequestParam(required = false) Integer donationAmount){
         MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 
         if (loginMember != null) {
