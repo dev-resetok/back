@@ -18,4 +18,7 @@ alter table tbl_payment
 insert into tbl_payment
 values (1,'COMPLETED',10000,23,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)
 
+delete from tbl_payment
+where member_id = 33;
+
 
