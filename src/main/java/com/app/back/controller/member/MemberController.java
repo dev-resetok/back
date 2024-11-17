@@ -236,6 +236,7 @@ public class MemberController {
         MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
         MemberDTO loginMember = loginMemberBefore.toDTO();
 
+
         if (loginMember != null) {
             model.addAttribute("member", loginMember);
             charge = charge != null ? true : false;
