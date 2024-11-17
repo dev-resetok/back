@@ -473,6 +473,7 @@ document.querySelector(".post-filter-wrapper").addEventListener("click", async (
     if (event.target.classList.contains("inquiry-button")) {
         const postId = event.target.closest(".ServiceTable_row").querySelector(".post_ID").textContent.trim();
         const postType = event.target.closest(".ServiceTable_row").querySelector(".post_kind").textContent.trim();
+        console.log(postId,postType)
         await navigateToPostPage(postType, postId);
     }
 });

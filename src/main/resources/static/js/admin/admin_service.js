@@ -406,20 +406,20 @@ const openReviewModal = async (reviewId) => {
 
 // 게시글 조회 시 해당 postType에 따라 페이지 이동 또는 모달 열기
 const navigateToPostPage = (postType, postId) => {
-    if (postType === 'REVIEW') {
+    if (postType === '이용 후기') {
         // REVIEW 타입일 경우 모달을 엽니다.
         openReviewModal(postId);
     } else {
         // 다른 타입은 기존 URL로 이동합니다.
         let url = '';
         switch (postType) {
-            case 'VOLUNTEER':
+            case '봉사활동 모집글':
                 url = `/volunteer/volunteer-inquiry?postId=${postId}`;
                 break;
-            case 'DONATION':
+            case '기부 게시글':
                 url = `/donation/donation-inquiry?postId=${postId}`;
                 break;
-            case 'SUPPORT':
+            case '후원 게시글':
                 url = `/support/support-inquiry?postId=${postId}`;
                 break;
             default:
