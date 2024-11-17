@@ -27,6 +27,8 @@ public class KakaoController {
         Optional<MemberDTO> kakaoInfo = kakaoService.getKakaoInfo(token);
 
         if (kakaoInfo.isPresent()) {
+            log.info("카카오정보 : {}", kakaoInfo.get());
+            memberService.join(kakaoInfo.get().toVO());
             MemberVO kakaoMember = memberService.getKakaoMember(kakaoInfo.get().getKakaoEmail()).orElseThrow();
             session.setAttribute("loginMember", kakaoMember);
             session.setAttribute("loginType", MemberLoginType.KAKAO);  // Enum 사용
