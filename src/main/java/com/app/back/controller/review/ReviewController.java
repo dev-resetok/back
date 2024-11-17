@@ -1,6 +1,7 @@
 package com.app.back.controller.review;
 
 import com.app.back.domain.donation_record.DonationRecordDTO;
+import com.app.back.domain.member.MemberDTO;
 import com.app.back.domain.post.Pagination;
 import com.app.back.domain.review.ReviewDTO;
 import com.app.back.service.attachment.AttachmentServiceImpl;
@@ -41,7 +42,8 @@ public class ReviewController {
 
     @PostMapping("review-write")
     public RedirectView reviewWrite(ReviewDTO reviewDTO, @RequestParam("uuid") List<String> uuids, @RequestParam("realName") List<String> realNames, @RequestParam("path") List<String> paths, @RequestParam("size") List<String>sizes, @RequestParam("file") List<MultipartFile> files) throws IOException {
-        reviewDTO.setMemberId(23L);
+        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+        reviewDTO.setMemberId(loginMember.getId());
         reviewDTO.setPostType("REVIEW");
         reviewDTO.setPostTitle(reviewDTO.getVtGroupName());
 

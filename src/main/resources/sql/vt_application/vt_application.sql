@@ -18,3 +18,6 @@ select *from tbl_vt_application;
 insert into tbl_vt_application(created_date, application_status, vt_id, member_id)
 VALUES (current_timestamp, 'APPROVED',77,16);
 
+delete from tbl_vt_application
+where id = 5;
+

@@ -39,18 +39,18 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // 등록되지 않은 이메일일 경우 경고 메시지 출력
-        if (!registeredEmails.includes(emailValue)) {
-            emailInput.style.borderColor = "#f05050"; // 경고 색상
-            warningMessage.textContent = "가입되지 않은 이메일 입니다.";
-            warningMessage.classList.add("warning-msg");
-            warningMessage.style.display = "block";
-            return;
-        }
-
-        // 성공 시 메시지 출력 및 경고 숨기기
-        emailInput.style.borderColor = "#189f14"; // 성공 색상
-        warningMessage.style.display = "none";
-        alert("비밀번호 변경 이메일을 전송했습니다.");
+        // if (!registeredEmails.includes(emailValue)) {
+        //     emailInput.style.borderColor = "#f05050"; // 경고 색상
+        //     warningMessage.textContent = "가입되지 않은 이메일 입니다.";
+        //     warningMessage.classList.add("warning-msg");
+        //     warningMessage.style.display = "block";
+        //     return;
+        // }
+        //
+        // // 성공 시 메시지 출력 및 경고 숨기기
+        // emailInput.style.borderColor = "#189f14"; // 성공 색상
+        // warningMessage.style.display = "none";
+        // alert("비밀번호 변경 이메일을 전송했습니다.");
     });
 
     // 입력 중 경고 메시지 숨기기

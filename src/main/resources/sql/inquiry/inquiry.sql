@@ -10,7 +10,7 @@ create table tbl_inquiry(
 
 select * from tbl_inquiry;
 
-alter table tbl_inquiry add column inquiry_type varchar(255) not null ;
+alter table tbl_inquiry add column inquiry_type varchar(255) not null`` ;
 
 
 drop table tbl_inquiry;

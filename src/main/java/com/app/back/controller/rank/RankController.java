@@ -5,6 +5,7 @@ import com.app.back.domain.post.Pagination;
 import com.app.back.domain.rank.RankDTO;
 import com.app.back.service.member.MemberService;
 import com.app.back.service.rank.RankService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnailator;
@@ -24,11 +25,15 @@ public class RankController {
     private final RankService rankService;
 
     @GetMapping("/rank")
-    public String goToList(Pagination pagination, Model model) {
+    public String goToList(HttpSession session, Pagination pagination, Model model) {
+
+        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember"); // MemberDTO로 캐스팅
+        boolean isLoggedIn = (loginMember != null);
 
         model.addAttribute("vtRankMembers", rankService.selectTop5ByVt(new Date().getMonth() + 1));
         model.addAttribute("supportRankMembers", rankService.selectTop5BySupport(new Date().getMonth() + 1));
         model.addAttribute("donationRankMembers", rankService.selectTop5ByDonation(new Date().getMonth() + 1));
+
 
         log.info("회원 봉사 랭킹 : {}", model.getAttribute("vtRankMembers"));
         log.info("회원 후원 랭킹 : {}", model.getAttribute("supportRankMembers"));
@@ -44,6 +49,12 @@ public class RankController {
         log.info("페이지 : {}", pagination.getPage().toString());
         log.info("페이지네이션 시작 : {}", pagination.getStartRow());
         log.info("페이지네이션 끝 : {}", pagination.getEndRow());
+
+        model.addAttribute("isLogin", isLoggedIn);
+        if (isLoggedIn) {
+            model.addAttribute("member", loginMember);
+        }
+        log.info("Navigating to rank page. isLogin: {}", isLoggedIn);
 
         return "rank/rank";
     }

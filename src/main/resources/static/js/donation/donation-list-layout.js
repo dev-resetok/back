@@ -42,26 +42,7 @@ const showDonationPosts = (donations) => {
                       
                     </div>
                     <div class="contest-info-bottom">
-                        <div
-                            class="profile-image-wrap"
-                            style="
-                                width: 20px;
-                                height: 20px;
-                                cursor: default;
-                            "
-                        >
-                            <img
-                                class="profile-image"
-                                alt="profile-image"
-                                src="https://cdn-dantats.stunning.kr/prod/users/8aca0f63-1d3b-4e6d-a3ec-4404690b63e4/avatar/fvBZSrehSed7XvGb.%E1%84%92%E1%85%A1%E1%84%82%E1%85%A1%E1%84%8F%E1%85%A1%E1%84%83%E1%85%B3%20CI.png.small?q=100&amp;t=crop&amp;s=40x40&amp;f=webp"
-                                style="
-                                    width: 20px;
-                                    height: 20px;
-                                    border-radius: 50%;
-                                    object-fit: cover;
-                                "
-                            />
-                        </div>
+                       
                         <div
                             class="contest-info-bottom-user-nick"
                         >

@@ -88,6 +88,7 @@ public class MemberServiceImpl implements MemberService {
         Optional<MemberVO> foundKakaoMember =
                 memberDAO.findByMemberKakaoEmail(memberVO.getKakaoEmail());
 
+
         if (foundKakaoMember.isEmpty()) {
             memberDAO.save(memberVO);
         }
@@ -117,7 +118,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Optional<MemberVO> getKakaoMember(String memberKakaoEmail) {
-        return memberDAO.findByMemberKakaoEmail(memberKakaoEmail);
+        Optional<MemberVO> memberOpt = memberDAO.findByMemberKakaoEmail(memberKakaoEmail);
+        log.info("조회된 카카오 회원 정보: {}", memberOpt);
+        return memberOpt;
     }
 
     @Override

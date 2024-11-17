@@ -6,12 +6,12 @@
             <when test="memberPassword != null">
                 insert into tbl_member (
                 member_email, member_name, member_phone, member_password,
-                member_nickname, member_jung, member_point, member_type,
-                member_login_type, created_date, updated_date
+                member_nickname, member_jung, member_point,
+                 created_date, updated_date
                 ) values (
                 #{memberEmail}, #{memberName}, #{memberPhone}, #{memberPassword},
-                #{memberNickName}, #{memberJung}, #{memberPoint}, #{memberType},
-                #{memberLoginType}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+                #{memberNickName}, #{memberJung}, #{memberPoint},
+                 CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
                 )
             </when>
             <otherwise>
@@ -115,23 +115,45 @@
     </select>
 
     <select id="selectTop100VolunteerGroup" resultType="memberDTO">
-        select mr.id, mr.member_nickname, mr.member_introduction, mr.member_star_rate, mr.created_date, mr.count_r_id as count_review
-        from tbl_post p join (
-            select m.id, m.member_nickname, count(r.id) as count_r_id, m.member_star_rate, m.member_introduction, m.created_date
-            from tbl_member m join tbl_review r
-            on m.member_nickname = r.vt_group_name and m.member_type = "ORGANIZATION"
-            group by m.id
-        ) as mr
-        on p.member_id = mr.id and p.post_type = "VOLUNTEER"
-        group by mr.id
-        order by
+        SELECT
+        mr.id,
+        mr.member_nickname,
+        mr.member_introduction,
+        mr.member_star_rate,
+        mr.created_date,
+        mr.count_r_id AS count_review,
+        tp.profile_file_name,
+        tp.profile_file_path,
+        tp.profile_file_size,
+        tp.profile_file_type
+        FROM tbl_post p
+        JOIN (
+        SELECT
+        m.id,
+        m.member_nickname,
+        COUNT(r.id) AS count_r_id,
+        m.member_star_rate,
+        m.member_introduction,
+        m.created_date
+        FROM tbl_member m
+        JOIN tbl_review r ON m.member_nickname = r.vt_group_name
+        AND m.member_type = "ORGANIZATION"
+        GROUP BY m.id
+        ) AS mr ON p.member_id = mr.id
+        AND p.post_type = "VOLUNTEER"
+        LEFT JOIN tbl_profile tp ON mr.id = tp.member_id
+        GROUP BY mr.id
+        ORDER BY
         <choose>
-        <when test="pagination.order == '별점순'.toString()">mr.member_star_rate</when>
-        <otherwise>count_review</otherwise>
-        </choose>
-        desc, mr.created_date asc
-        limit #{pagination.startRow}, #{pagination.rowCount};
+            <when test="pagination.order == '별점순'.toString()">mr.member_star_rate</when>
+            <otherwise>count_review</otherwise>
+        </choose> DESC,
+        mr.created_date ASC
+        LIMIT #{pagination.startRow}, #{pagination.rowCount};
     </select>
+
+
+
 
     <select id="selectTop5ByVt" resultType="memberDTO">
         select arm.id

@@ -53,9 +53,10 @@ public class DonationController {
     }
 
     @PostMapping("donation-write")
-    public RedirectView donationWrite(DonationDTO donationDTO, @RequestParam("uuid") List<String> uuids, @RequestParam("realName") List<String> realNames, @RequestParam("path") List<String> paths, @RequestParam("size") List<String> sizes, @RequestParam("file") List<MultipartFile> files) throws IOException {
-        MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
-        MemberDTO loginMember = loginMemberBefore.toDTO();
+
+    public RedirectView donationWrite(DonationDTO donationDTO, @RequestParam("uuid") List<String> uuids, @RequestParam("realName") List<String> realNames, @RequestParam("path") List<String> paths, @RequestParam("size") List<String> sizes, @RequestParam("file") List<MultipartFile> files, HttpSession session) throws IOException {
+        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+
         donationDTO.setMemberId(loginMember.getId());
         donationDTO.setPostType("DONATION");
         if (donationDTO.getPostTitle() == null || donationDTO.getPostContent() == null) {

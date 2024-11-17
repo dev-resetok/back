@@ -24,10 +24,10 @@ public class DonationRecordMapperTests {
         // 1. DonationRecordDTO 생성
         DonationRecordDTO donationRecordDTO = new DonationRecordDTO(
                 null, // ID는 자동 생성
-                300000, // 기부 금액
+                2000, // 기부 금액
                 LocalDateTime.now().toString(), // 생성 시간
-                19L, // memberId
-                22L  // donationId
+                23L, // memberId
+                1L  // donationId
         );
 
         // 2. DTO를 VO로 변환 후 삽입

@@ -12,5 +12,5 @@ create table tbl_support_record(
 
 select * from tbl_support_record;
 
-insert into tbl_support_record(member_id, support_id, support_amount)
-values (19,602,30000);
+insert into tbl_support_record(member_id, support_id, support_amount,created_date)
+values (23,79,30000,여기를 10월로 5개만);

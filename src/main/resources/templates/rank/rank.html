@@ -6,11 +6,20 @@
         <title>봉사 랭킹</title>
         <link rel="stylesheet" href="/css/rank/rank.css" />
         <link
-            rel="icon"
-            href="https://cdn-dantats.stunning.kr/static/feature/loudFavicon/loud-favicon-32-new.png"
+                rel="icon"
+                href="/images/favicon.png"
         />
+        <link rel="stylesheet" href="/css/main/basic-header.css" />
+        <link rel="stylesheet" href="/css/main/footer.css"/>
+        <link rel="stylesheet" href="/css/main/login-header-no-noti.css">
     </head>
     <body>
+    <div th:if="${isLogin}">
+        <th:block th:replace="~{main/login-header-no-noti :: header}"></th:block>
+    </div>
+    <div th:if="${!isLogin}">
+        <th:block th:replace="~{main/basic-header :: header}"></th:block>
+    </div>
         <div class="content-container content">
             <main class="expert-rank-page">
                 <section class="top-rank">
@@ -381,7 +390,11 @@
                 </section>
             </main>
         </div>
+    <div th:replace="~{main/footer :: footer}"></div>
     </body>
+    <script th:if="${member != null}">
+        let memberId = [[${member.id}]];
+    </script>
     <script th:inline="javascript">
         const pagination = [[${pagination}]];
         const volunteerGroups = [[${volunteerGroups}]];
@@ -390,4 +403,5 @@
         const donationRankMembers = [[${donationRankMembers}]];
     </script>
     <script src="/js/rank/rank.js"></script>
+    <script src="/js/main/login-header.js"></script>
 </html>

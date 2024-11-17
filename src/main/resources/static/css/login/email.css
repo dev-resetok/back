@@ -88,7 +88,7 @@ header {
     padding-bottom: 20px;
 }
 .header .logo.loud {
-    background: url(https://accounts-front.stunning.kr/assets/img/common/ico-loud-basic.png) 50% 0 no-repeat;
+    background: url(/images/onjung-logo.png) 50% 0 no-repeat;
     background-size: contain;
 }
 .right-right-area-register .right-join-wrap{

@@ -14,6 +14,9 @@ create table tbl_profile(
 
 select * from tbl_profile;
 
+delete from tbl_profile
+where member_id = 16;
+
 drop table tbl_profile;
 insert into tbl_profile(profile_file_name,profile_file_path, profile_file_size,profile_file_type,member_id)
 values ('테스트파일이름2','테스트파일패스2', '테스트파일사이즈2','테스트파일타입2',3)

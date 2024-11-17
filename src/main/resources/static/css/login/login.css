@@ -101,7 +101,7 @@ header {
 
 .header .logo.loud {
     display: inline-block;
-    background: url(https://accounts-front.stunning.kr/assets/img/common/ico-loud-basic.png) 50% 0 no-repeat;
+    background: url(/images/onjung-logo.png) 50% 0 no-repeat;
     background-size: contain;
 }
 .header .logo, .header .logo.loud {

@@ -33,7 +33,7 @@ async function loadBanners() {
                                     </svg>
                                 </button>
                             </div>
-                            <img class="hkaqym banner-web-image" src="${support.attachmentFileName ? `/attachment/display?attachmentFileName=${support.attachmentFilePath + "/t_" + support.attachmentFileName + support.attachmentFileRealName}` : '/images/default-banner.jpg'}" alt="banner image">
+                            <img class="hkaqym banner-web-image" src="${support.attachmentFileName ? `/attachment/display?attachmentFileName=${support.attachmentFilePath + "/t_" + support.attachmentFileName + support.attachmentFileRealName}` : '/images/banner-img.jpg'}" alt="banner image">
                         </div>
                     </a>
                 </div>
@@ -158,7 +158,7 @@ async function loadReviews() {
                                     </div>
                                     <div class="user-info">
                                         <span class="cwvgid avatar">
-                                            <img src="${review.profileFileName ? `/profile/display?memberId=${review.memberId}` : 'default-avatar.jpg'}" alt="프로필">
+                                            <img src="${review.profileFileName ? `/profile/display?memberId=${review.memberId}` : 'default-profile.png'}" alt="프로필">
                                         </span>
                                         <div class="ktmctf user-nick-wrapper">
                                             <p class="jqtfdi">
