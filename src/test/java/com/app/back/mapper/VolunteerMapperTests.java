@@ -30,13 +30,13 @@ public class VolunteerMapperTests {
     @Test
     public void testInsert(){
         VolunteerDTO volunteerDTO = new VolunteerDTO();
-        volunteerDTO.setId(11L);
-        volunteerDTO.setRecruitmentCount(7);
-        volunteerDTO.setVtSDate("2024-09-25");
-        volunteerDTO.setVtEDate("2024-10-15");
+        volunteerDTO.setId(78L);
+        volunteerDTO.setRecruitmentCount(10);
+        volunteerDTO.setVtSDate("2024-11-18");
+        volunteerDTO.setVtEDate("2024-12-18");
 
         volunteerMapper.insert(volunteerDTO.toVO());
-        log.info("봉사활동구인글이 작성 되었습니다: {}", volunteerDTO);
+        log.info("봉사활동 구인글이 작성 되었습니다: {}", volunteerDTO);
     }
 
 

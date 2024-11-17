@@ -17,5 +17,8 @@ select * from tbl_report;
 
 drop table tbl_report;
 
+alter table tbl_report add column reported_member_id bigint unsigned not null;
+
+
 
 

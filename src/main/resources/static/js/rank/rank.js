@@ -34,11 +34,9 @@ const renderRankings = (rankings, containerClass) => {
             <article class="user-rank-article rank-user">
                 <div class="avatar-wrap">
                     ${svgElement}
-<!--                    <a class="user-img avatar" href="${user.profileUrl}">
-                        <img src="${user.avatarUrl}" />
-                    </a> -->
+
                     <a class="user-img avatar" href="">
-                        <img src="" />
+                        <img src="${user.profileFileName ? `/profile/display?memberId=${user.id}` : 'default-profile.png'}" alt="프로필">
                     </a>
                 </div>
 <!--                <p class="user-rank rank-number">${user.rank}</p>-->
@@ -108,7 +106,7 @@ const showVolunteerGroups = (volunteerGroups) => {
             <div class="expert-card-left">
                 <div class="expert-card-info-avatar">
                     <span class="profile-img-container avatar">
-                        <img src="https://cdn-dantats.stunning.kr/prod/users/fa970db0-abdd-4b41-a512-de0e18e3d27c/avatar/ZswD8qqqrARGSgFX.11.jpg.small?q=80&amp;t=crop&amp;s=320x320&amp;f=webp" alt="CORKSTUDIO의 프로필"/>
+                        <img src="${volunteerGroup.profileFileName ? `/profile/display?memberId=${volunteerGroup.id}` : 'default-profile.png'}" alt="프로필">
                     </span>
                 </div>
                 <div class="expert-card-info">
@@ -153,7 +151,7 @@ const showVolunteerGroups = (volunteerGroups) => {
                     </div>
                     <div class="expert-card-info-meta">
                        
-                        <div class="info-meta-container expert-card-info-meta-item">
+                       <!-- <div class="info-meta-container expert-card-info-meta-item">
                             <span class="expert-card-info-meta-item-title">봉사활동 모집 수</span>
                             <div class="expert-card-info-meta-item-spacer"></div>
                             <div class="expert-card-info-meta-item-value">
@@ -165,7 +163,7 @@ const showVolunteerGroups = (volunteerGroups) => {
                                     <span class="number-text-suffix">회+</span>
                                 </p>
                             </div>
-                        </div>
+                        </div> --!>
                      
                      
                         <div class="info-meta-container expert-card-info-meta-item">

@@ -869,6 +869,7 @@ const renderVolunteers = (volunteers) => {
                         <th>게시글 제목</th> 
                         <th>봉사 시간</th>
                         <th>신청일</th>
+                        <th>후기 작성</th>
                     </tr>
                 </thead>
                 <tbody class="news-center-table-body">
@@ -883,6 +884,9 @@ const renderVolunteers = (volunteers) => {
                             </td>
                             <td class="news-center-table-body-date">
                                 ${new Date(volunteer.createdDate).toLocaleDateString('ko-KR')}
+                            </td>
+                            <td class="news-center-table-body-title">
+                            <a href="/review/review-write" style="text-decoration: underline; color: rgb(56, 122, 252);">작성하기</a>
                             </td>
                         </tr>
                     `).join('')}

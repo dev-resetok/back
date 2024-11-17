@@ -110,8 +110,8 @@ public class MemberController {
 
     @GetMapping("/main/main")
     public String goToMain(HttpSession session, Model model) {
-        MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
-        MemberDTO loginMember = loginMemberBefore.toDTO();
+        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember"); // MemberDTO로 캐스팅
+
         boolean isLoggedIn = (loginMember != null);
 
         model.addAttribute("isLogin", isLoggedIn);

@@ -3,6 +3,7 @@ package com.app.back.controller.notice;
 
 import com.app.back.domain.attachment.AttachmentVO;
 import com.app.back.domain.inquiry.InquiryDTO;
+import com.app.back.domain.member.MemberDTO;
 import com.app.back.domain.notice.NoticeDTO;
 import com.app.back.domain.post.Pagination;
 import com.app.back.domain.post.Search;
@@ -54,8 +55,9 @@ public class NoticeController {
     }
 
     @PostMapping("help-write")
-    public RedirectView inquiryWrite(@RequestParam("file") List<MultipartFile> files, InquiryDTO inquiryDTO,AttachmentVO attachmentVO) throws IOException {
-        inquiryDTO.setMemberId(2L);
+    public RedirectView inquiryWrite(@RequestParam("file") List<MultipartFile> files, InquiryDTO inquiryDTO,AttachmentVO attachmentVO, HttpSession session) throws IOException {
+        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+        inquiryDTO.setMemberId(loginMember.getId());
         inquiryDTO.setPostType("INQUIRY");
 
         // InquiryType 한글명을 코드값으로 변환

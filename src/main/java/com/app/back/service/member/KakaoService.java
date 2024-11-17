@@ -89,6 +89,7 @@ public class KakaoService {
                 memberDTO.setMemberName(profile.getAsJsonObject().get("nickname").getAsString());
                 memberDTO.setKakaoEmail(kakaoAccount.getAsJsonObject().get("email").getAsString());
                 memberDTO.setKakaoProfileURL(profile.getAsJsonObject().get("profile_image_url").getAsString());
+                memberDTO.setMemberType("KAKAO");
                 memberDTO.setMemberLoginType(MemberLoginType.KAKAO.name());
 
                 bufferedReader.close();

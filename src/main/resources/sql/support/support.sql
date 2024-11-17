@@ -11,6 +11,6 @@ create table tbl_support(
 select * from tbl_support;
 
 insert into tbl_support(id, goal_point, support_s_date, support_e_date)
-VALUES(142,30000,'2024-12-02', '2025-06-03');
+VALUES(79,300000,'2024-11-18', '2025-06-03');
 
 alter table tbl_support add column current_point int default 0;

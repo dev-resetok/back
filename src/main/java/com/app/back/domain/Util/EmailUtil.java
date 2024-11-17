@@ -85,8 +85,8 @@ public class EmailUtil {
                         "            <tr>\n" +
                         "              <td style=\"font-family:Apple SD Gothic Neo,sans-serif,'맑은고딕',Malgun Gothic,'굴림',gulim; padding-top:120px; padding-bottom:23px; border-bottom:2px solid #272727;\">\n" +
                         "                <a href=\"" + resetLink + "\" target=\"_blank\" rel=\"noreferrer noopener\">\n" +
-                        "                  <img src=\"https://accounts-front.stunning.kr/assets/img/email/img-stunning-logo.png\" loading=\"lazy\" style=\"width:147px; height:20px\">\n" +
                         "                </a>\n" +
+                        "                  <p style=\"font-size: 20px; \">온정 비밀번호 재설정 링크 발송 이메일</p>\n" +
                         "              </td>\n" +
                         "            </tr>\n" +
                         "            <tr>\n" +
@@ -100,9 +100,8 @@ public class EmailUtil {
                         "                        <a href=\"" + resetLink + "\" target=\"_blank\" style=\"display:inline-block; margin:0; padding:16px 0; font-size:16px; color:#fff; background-color:#000; text-align:center; text-decoration:none;\">\n" +
                         "                          <div style=\"min-width:200px; width:50%;\">비밀번호 재설정</div>\n" +
                         "                        </a>\n" +
-                        "                        <p style=\"padding-top:20px; font-size:12px; color:#666;\">인증 시간이 만료되었을 경우, 인증번호 재발송을 진행해 주시기 바랍니다.<br>유효 시간: 2024-10-25T12:24:49+09:00</p>\n" +
-                        "                        <p style=\"border-bottom:1px solid #d3d6dd; font-size:12px; color:#666;\"><strong>* 비밀번호 변경 관련 문제가 발생하면 help@stunning.kr 로 문의해주세요.</strong></p>\n" +
-                        "                        <p style=\"padding-top:35px; font-size:12px; color:#a9a9a9;\"><strong>(주)스터닝</strong> (대표이사:김승환) | 사업자등록번호:120-87-69298 | 통신판매:제2011-서울강남-01864 | 직업정보제공:J1200020190003 | ©2020 STUNNING INC.</p>\n" +
+                        "                        <p style=\"padding-top:20px; font-size:12px; color:#666;\">인증 시간이 만료되었을 경우, 인증번호 재발송을 진행해 주시기 바랍니다.<br>\n" +
+                        "                        <p style=\"border-bottom:1px solid #d3d6dd; font-size:12px; color:#666;\"><strong>* 비밀번호 변경 관련 문제가 발생하면 ljm21000@gmail.com 로 문의해주세요.</strong></p>\n" +
                         "                        <a href=\"" + resetLink + "\" target=\"_blank\" style=\"margin-right:15px;\" rel=\"noreferrer noopener\">\n" +
                         "                          <img src=\"https://accounts-front.stunning.kr/assets/img/email/img-loud-logo.png\" loading=\"lazy\" style=\"width:87px; height:20px\">\n" +
                         "                        </a>\n" +
