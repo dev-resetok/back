@@ -10,7 +10,7 @@ const showList = () => {
     let text = ``; // HTML 내용을 저장할 변수 초기화
     console.log(notices);
     notices.forEach((notice) => {
-        text += `<li class="sidebar-item-container">
+        text += `<li>
             <a href="/help/help-notification-inquiry?id=${notice.id}"
                class="sidebar-item">${notice.postTitle}
                (${notice.createdDate})</a>

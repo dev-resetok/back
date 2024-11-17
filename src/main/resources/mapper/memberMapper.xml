@@ -134,29 +134,38 @@
     </select>
 
     <select id="selectTop5ByVt" resultType="memberDTO">
-        select
-            m.id,
-            m.member_nickname,
-            m.created_date,
-            ar.sum_vt_time,
-            p.profile_file_name,
-            p.profile_file_path,
-            p.profile_file_size,
-            p.profile_file_type
-        from tbl_member m
-                 join (
-            select
-                a.member_id,
-                sum(r.vt_time) as sum_vt_time
-            from tbl_vt_application a
-                     join tbl_vt_record r on a.id = r.id
+        select arm.id
+               arm.member_nickname,
+               arm.created_date,
+               arm.sum_vt_time,
+               p.profile_file_name,
+               p.profile_file_path,
+               p.profile_file_size,
+               p.profile_file_type
+        from tbl_profile_p left join
+            (select
+                    m.id,
+                    m.member_nickname,
+                    m.created_date,
+                    ar.sum_vt_time,
+            from tbl_member m
+            join (
+                select
+                    a.member_id,
+                    sum(r.vt_time) as sum_vt_time
+                from tbl_vt_application a
+                join tbl_vt_record r
+                on a.id = r.id
                 and month(r.vt_date) = #{month}
-            group by a.member_id
-        ) ar on m.id = ar.member_id
-                 left join tbl_profile p on m.id = p.member_id
-        group by m.id
+                group by a.member_id
+                ) ar
+            on m.id = ar.member_id
+            group by m.id
+            ) arm
+        on arm.id = p.member_id
+        group by arm.id
         order by ar.sum_vt_time desc, m.created_date asc
-            limit 5;
+        limit 5;
     </select>
 
 

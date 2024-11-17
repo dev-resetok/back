@@ -63,14 +63,19 @@ public class MemberController {
         Optional<MemberVO> member = memberService.login(memberDTO.toVO());
         if (member.isPresent()) {
             log.info("로그인 성공, MemberVO: {}", member.get());
-            MemberDTO memberDTOFromVO = member.get().toDTO();
+//            MemberDTO memberDTOFromVO = member.get().toDTO();
+//            // 세션에 로그인된 사용자 정보 저장
+//            session.setAttribute("loginMember", memberDTOFromVO);
+//            log.info("로그인 후 세션에 저장할 사용자 정보: {}", memberDTOFromVO);
+            MemberVO memberVO = member.get();
             // 세션에 로그인된 사용자 정보 저장
-            session.setAttribute("loginMember", memberDTOFromVO);
-            log.info("로그인 후 세션에 저장할 사용자 정보: {}", memberDTOFromVO);
+            session.setAttribute("loginMember", memberVO);
+            log.info("로그인 후 세션에 저장할 사용자 정보: {}", memberVO);
 
 
 
-            MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+            MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
+            MemberDTO loginMember = loginMemberBefore.toDTO();
             if (loginMember == null) {
                 log.info("세션에 저장된 로그인 정보가 없습니다.");
             } else {
@@ -79,11 +84,11 @@ public class MemberController {
 
 
             // 로그 추가: 관리자 여부 확인
-            String memberType = memberDTOFromVO.getMemberLoginType();
+            String memberType = memberVO.getMemberLoginType();
             log.info("로그인한 사용자 유형: {}", memberType);
 
             // 사용자 유형에 따른 리다이렉트 URL 설정
-            String redirectUrl = "NORMAL".equals(memberDTOFromVO.getMemberLoginType()) ? "/main/main" : "/admin";
+            String redirectUrl = "NORMAL".equals(memberVO.getMemberLoginType()) ? "/main/main" : "/admin";
             LoginResponseDTO responseDTO = new LoginResponseDTO(redirectUrl);
 
             return ResponseEntity.ok(responseDTO);
@@ -105,7 +110,8 @@ public class MemberController {
 
     @GetMapping("/main/main")
     public String goToMain(HttpSession session, Model model) {
-        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+        MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
+        MemberDTO loginMember = loginMemberBefore.toDTO();
         boolean isLoggedIn = (loginMember != null);
 
         model.addAttribute("isLogin", isLoggedIn);
@@ -227,7 +233,9 @@ public class MemberController {
 
     @GetMapping("/mypage/mypage")
     public String goToMypage(HttpSession session, Model model, @RequestParam(required = false) Boolean charge, @RequestParam(required = false) Integer donationAmount){
-        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+        MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
+        MemberDTO loginMember = loginMemberBefore.toDTO();
+
 
         if (loginMember != null) {
             model.addAttribute("member", loginMember);
@@ -244,7 +252,8 @@ public class MemberController {
 
     @GetMapping("/charge")
     public String goToCharge(HttpSession session){
-        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+        MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
+        MemberDTO loginMember = loginMemberBefore.toDTO();
 
         if (loginMember != null) {
             log.info("charge로 감");
@@ -256,7 +265,8 @@ public class MemberController {
 
     @GetMapping("/donation/charge/{donationAmount}")
     public String goToChargeForDonation(HttpSession session, PathVariable donationAmount) {
-        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+        MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
+        MemberDTO loginMember = loginMemberBefore.toDTO();
 
         if (loginMember != null) {
             log.info("donationCharge로 감");
@@ -280,7 +290,8 @@ public class MemberController {
     @GetMapping("/member/info")
     @ResponseBody
     public ResponseEntity<MemberDTO> getMemberInfo(HttpSession session) {
-        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+        MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
+        MemberDTO loginMember = loginMemberBefore.toDTO();
 
         if (loginMember != null) {
             log.info("세션에서 가져온 회원 정보: {}", loginMember);
@@ -293,7 +304,8 @@ public class MemberController {
 
     @GetMapping("/mypage/mypage-profile-edit")
     public String goToProfileEdit(HttpSession session, Model model) {
-        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+        MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
+        MemberDTO loginMember = loginMemberBefore.toDTO();
 
         if (loginMember != null) {
             model.addAttribute("member", loginMember);
@@ -306,20 +318,21 @@ public class MemberController {
     @PostMapping("/member/update-profile")
     @ResponseBody
     public ResponseEntity<String> updateProfile(
-            @RequestBody MemberDTO memberDTO1, HttpSession session) {
+            @RequestBody MemberVO memberVO, HttpSession session) {
 
-        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+        MemberVO loginMemberBefore = (MemberVO) session.getAttribute("loginMember");
+        MemberDTO loginMemberChanged = loginMemberBefore.toDTO();
 
-        if (loginMember == null) {
+        if (loginMemberChanged == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
         }
 
-        loginMember.setMemberNickName(memberDTO1.getMemberNickName());
-        loginMember.setMemberIntroduction(memberDTO1.getMemberIntroduction());
+        loginMemberChanged.setMemberNickName(memberVO.getMemberNickName());
+        loginMemberChanged.setMemberIntroduction(memberVO.getMemberIntroduction());
 
-        session.setAttribute("loginMember", loginMember);
+        session.setAttribute("loginMember", loginMemberChanged.toVO());
 
-        memberService.updateProfile(loginMember.toVO());
+        memberService.updateProfile(loginMemberChanged.toVO());
 
         return ResponseEntity.ok("프로필이 성공적으로 수정되었습니다.");
     }

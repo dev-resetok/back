@@ -23,8 +23,8 @@ public class InquiryDTO {
     private String postContent;
     private String postSummary;
     private String postType;
-    private String postStatus;
-    private Long postViewCount;
+    private String postStatus = "VISIBLE";
+    private Long postViewCount = 0L;
     private Long memberId;
     private String createdDate;
     private String updatedDate;

@@ -412,6 +412,9 @@
         </div>
         <div th:replace="~{main/footer :: footer}"></div>
     </body>
+    <script th:inline="javascript">
+        const member = [[${session.loginMember}]];
+    </script>
     <script th:if="${member != null}">
         let memberId = [[${member.id}]];
     </script>
