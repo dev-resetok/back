@@ -20,7 +20,7 @@ public class DonationRecordController {
     private final DonationRecordService donationRecordService;
 
     @PostMapping("/write")
-    public void createDonationRecord(@RequestBody DonationRecordDTO donationRecordDTO, @RequestParam("donationId") Long donationId, @RequestParam("donationAmount") int donationAmount, HttpSession session) {
+    public void createDonationRecord(@RequestBody DonationRecordDTO donationRecordDTO, @RequestParam("donationId") Long donationId, @RequestParam("donationAmount") Integer donationAmount, HttpSession session) {
         MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
         donationRecordDTO.setMemberId(loginMember.getId());
         donationRecordDTO.setDonationId(donationId);
