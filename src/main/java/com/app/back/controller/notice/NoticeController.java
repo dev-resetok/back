@@ -6,6 +6,7 @@ import com.app.back.domain.inquiry.InquiryDTO;
 import com.app.back.domain.notice.NoticeDTO;
 import com.app.back.domain.post.Pagination;
 import com.app.back.domain.post.Search;
+import com.app.back.enums.InquiryType;
 import com.app.back.service.inquiry.InquiryService;
 import com.app.back.service.notice.NoticeService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -57,6 +58,15 @@ public class NoticeController {
         inquiryDTO.setMemberId(2L);
         inquiryDTO.setPostType("INQUIRY");
 
+        // InquiryType 한글명을 코드값으로 변환
+        InquiryType inquiryType = InquiryType.NORMAL; // 기본값 설정 (혹은 적절한 기본값)
+        if ("일반 문의".equals(inquiryDTO.getInquiryType())) {
+            inquiryType = InquiryType.NORMAL;
+        } else if ("봉사단체 가입 문의".equals(inquiryDTO.getInquiryType())) {
+            inquiryType = InquiryType.VOLUNTEER;
+        }
+        inquiryDTO.setInquiryType(inquiryType.name());
+
         String rootPath = "C:/upload" + getPath();
         UUID uuid = UUID.randomUUID();
 
@@ -75,14 +85,8 @@ public class NoticeController {
     }
 
     @GetMapping("help-notification-list")
-    public void getList(Pagination pagination, Search search, Model model, HttpServletRequest request) {
-        log.info((String)request.getAttribute("data"));
-        log.info("검색어: " + search.getKeyword());
-
-        if (pagination.getOrder() == null) {
-            pagination.setOrder("created_date desc, n.id desc"); // 기본 정렬 기준
-        }
-        if (search.getKeyword() != null) {
+    public String getList(Pagination pagination, Search search, Model model) {
+        if (search.getKeyword() != null && !search.getKeyword().isEmpty()) {
             pagination.setTotal(noticeService.getTotalWithSearch(search));
         } else {
             pagination.setTotal(noticeService.getTotal());
@@ -90,7 +94,9 @@ public class NoticeController {
         pagination.progress();
         model.addAttribute("notices", noticeService.getList(pagination, search));
         model.addAttribute("search", search);
+        return "help/help-notification-list";
     }
+
 
 
     @GetMapping("/help/help-notification-inquiry")

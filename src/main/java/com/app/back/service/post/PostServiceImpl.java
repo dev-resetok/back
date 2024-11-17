@@ -39,20 +39,28 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostDTO> getList(Pagination pagination, Search search) {
-        // 작성일 순, 조회수 순, 댓글수 순은 일반 정렬로 처리
-        if (pagination.getOrder().equals("작성일 순") || pagination.getOrder().equals("조회수 순") || pagination.getOrder().equals("댓글수 순")) {
-            return postDAO.findAll(pagination, search);
-        } else {
-            // "작성일 순" 외의 값에 대해서는 AdminPostType의 displayName에 맞는 값을 찾고, 그 값에 맞는 데이터를 필터링
-            AdminPostType postTypeEnum = AdminPostType.fromDisplayName(pagination.getOrder());
-            return postDAO.findFilterAll(pagination, search, postTypeEnum.name());
-        }
+        List<PostDTO> posts = postDAO.findAll(pagination, search);
+
+        // 각 PostDTO의 postType을 한글명으로 설정
+        posts.forEach(post -> {
+            AdminPostType postTypeEnum = AdminPostType.valueOf(post.getPostType());
+            post.setPostType(postTypeEnum.getDisplayName());
+        });
+
+        return posts;
     }
 
     @Override
     public List<PostDTO> getFilterList(Pagination pagination, Search search, AdminPostType filterType) {
-        pagination.setOrder(filterType.name());
-        return postDAO.findFilterAll(pagination, search, filterType.name());
+        List<PostDTO> posts = postDAO.findFilterAll(pagination, search, filterType.name());
+
+        // 각 PostDTO의 postType을 한글명으로 설정
+        posts.forEach(post -> {
+            AdminPostType postTypeEnum = AdminPostType.valueOf(post.getPostType());
+            post.setPostType(postTypeEnum.getDisplayName());
+        });
+
+        return posts;
     }
 
     @Override

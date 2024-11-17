@@ -1,5 +1,5 @@
 create table tbl_inquiry(
-    id bigint unsigned primary key,
+    id bigint unsigned auto_increment primary key,
     inquiry_status varchar(100) default 'WAITING',
     inquiry_email varchar(255) not null ,
     inquiry_phone varchar(255),

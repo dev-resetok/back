@@ -61,3 +61,4 @@ DROP PROCEDURE insert_multiple_posts;
 
 
 SELECT MAX(id) FROM tbl_post;
+SELECT LAST_INSERT_ID();

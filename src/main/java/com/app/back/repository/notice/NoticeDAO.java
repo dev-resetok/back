@@ -26,10 +26,6 @@ public class NoticeDAO {
     public void save(NoticeVO noticeVO) {
         noticeMapper.insert(noticeVO);
     }
-//    포스트 아이디 이어서 작성하기 위함
-    public Long selectCurrentId() {
-        return postMapper.selectCurrentId();
-    }
 
     //    게시글 전체 조회
     public List<NoticeDTO> findAll(Pagination pagination, Search search){
